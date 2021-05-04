@@ -2,6 +2,9 @@ from zipfile import ZipFile
 import os
 import shutil
 
+dict = {"0": "0", "1": "1", "2": "2", "3": "3", "4": "4", "5": 
+        "5", "6": "6", "7": "7", "8": "8", "9": "9"}
+
 def mangaLivre(arquivoNome):
     with ZipFile(f"{arquivoNome}", 'r') as zipObj:
         zipObj.extractall()
@@ -20,18 +23,25 @@ def mangaLivre(arquivoNome):
                 nomeManga += f" {palavra}"
 
     for word in arquivoNome.split("_"):
+        word = word.replace("-", "")
         if word.isdigit():
-            capitulo = word   
-
+            capitulo = word
     pastaFinal = f"Capitulo {capitulo} {nomeManga}"
             
     os.rename("content", pastaFinal)
     pasta = os.listdir(pastaFinal)
     numProv = 0
-          
+
     for imagem in pasta:
-        numProv += 1
-        os.rename(f"{pastaFinal}/{imagem}", f"{pastaFinal}/Pagina {numProv} de {len(pasta)}.png") 
+        numPag = ""
+        if len(imagem) < 5:
+            for letra in imagem:
+                
+                if letra in dict:
+                    numPag += dict[letra]
+        numPag = imagem
+                    
+        os.rename(f"{pastaFinal}/{imagem}", f"{pastaFinal}/Pagina {numPag} de {len(pasta)}.png") 
 
 def siteGringo(arquivoNome):
     capitulo = arquivoNome.replace(".zip", "")
