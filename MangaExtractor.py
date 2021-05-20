@@ -77,3 +77,7 @@ for arquivoNome in mangas:
             siteGringo(arquivoNome)
     else:
         pass
+    
+'''
+Isso é um teste
+'''
