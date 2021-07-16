@@ -39,9 +39,9 @@ def manga_livre(arquivo_nome):
                 
                 if letra in dict:
                     num_pag += dict[letra]
-        numPag = imagem
+        num_pag = imagem
                     
-        os.rename(f"{pasta_final}/{imagem}", f"{pasta_final}/Pagina {numPag} de {len(pasta)}.png") 
+        os.rename(f"{pasta_final}/{imagem}", f"{pasta_final}/Pagina {num_pag} de {len(pasta)}.png") 
 
 def siteGringo(arquivo_nome):
     capitulo = arquivo_nome.replace(".zip", "")
