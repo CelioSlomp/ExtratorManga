@@ -2,78 +2,79 @@ from zipfile import ZipFile
 import os
 import shutil
 
-dict = {"0": "0", "1": "1", "2": "2", "3": "3", "4": "4", "5": 
-        "5", "6": "6", "7": "7", "8": "8", "9": "9"}
+dict_nums = {"0": "0", "1": "1", "2": "2", "3": "3", "4": "4", 
+             "5": "5", "6": "6", "7": "7", "8": "8", "9": "9"}
 
-def mangaLivre(arquivoNome):
-    with ZipFile(f"{arquivoNome}", 'r') as zipObj:
+
+def manga_livre(arquivo_nome):
+    with ZipFile(f"{arquivo_nome}", 'r') as zipObj:
         zipObj.extractall()
         zipObj.close()
-        os.remove(arquivoNome)
+        os.remove(arquivo_nome)
             
-    nomeManga = ""
-    for palavra in arquivoNome.split("-"):
+    nome_manga = ""
+    for palavra in arquivo_nome.split("-"):
         if palavra.isdigit():
             break
         else:
             palavra = palavra.replace("_", "")
-            if palavra in listaCap:
+            if palavra in lista_cap:
                 break
             else:
-                nomeManga += f" {palavra}"
+                nome_manga += f" {palavra}"
 
-    for word in arquivoNome.split("_"):
+    for word in arquivo_nome.split("_"):
         word = word.replace("-", "")
         if word.isdigit():
             capitulo = word
-    pastaFinal = f"Capitulo {capitulo} {nomeManga}"
+    pasta_final = f"Capitulo {capitulo} {nome_manga}"
             
-    os.rename("content", pastaFinal)
-    pasta = os.listdir(pastaFinal)
-    numProv = 0
+    os.rename("content", pasta_final)
+    pasta = os.listdir(pasta_final)
 
     for imagem in pasta:
-        numPag = ""
+        num_pag = ""
         if len(imagem) < 5:
             for letra in imagem:
-                
-                if letra in dict:
-                    numPag += dict[letra]
-        numPag = imagem
+                if letra in dict_nums:
+                    num_pag += dict_nums[letra]
+        num_pag = imagem
                     
-        os.rename(f"{pastaFinal}/{imagem}", f"{pastaFinal}/Pagina {numPag} de {len(pasta)}.png") 
+        os.rename(f"{pasta_final}/{imagem}", f"{pasta_final}/Pagina {num_pag} de {len(pasta)}.png") 
 
-def siteGringo(arquivoNome):
-    capitulo = arquivoNome.replace(".zip", "")
+
+def site_gringo(arquivo_nome):
+    capitulo = arquivo_nome.replace(".zip", "")
     capitulo = f"Capitulo {capitulo} None"
     os.mkdir(capitulo)
-    shutil.move(arquivoNome, capitulo)
-    with ZipFile(f"{capitulo}/{arquivoNome}", 'r') as zipObj:
+    shutil.move(arquivo_nome, capitulo)
+    with ZipFile(f"{capitulo}/{arquivo_nome}", 'r') as zipObj:
         zipObj.extractall(capitulo)
         zipObj.close()
-        os.remove(f"{capitulo}/{arquivoNome}")
+        os.remove(f"{capitulo}/{arquivo_nome}")
     
     pasta = os.listdir(capitulo)
     
-    numeroPaginas = len(pasta)
+    numero_paginas = len(pasta)
     for imagem in pasta:    
         if imagem.endswith(".png"):
-            imagemFinal = imagem.replace(".png", "")
+            imagem_final = imagem.replace(".png", "")
         elif imagem.endswith(".jpg"):
-            imagemFinal = imagem.replace(".jpg", "")
-            
-        os.rename(f"{capitulo}/{imagem}", f"{capitulo}/Pagina {imagemFinal} de {numeroPaginas}.png") 
+            imagem_final = imagem.replace(".jpg", "")
 
-listaCap = []
+        os.rename(f"{capitulo}/{imagem}", f"{capitulo}/Pagina {imagem_final} de {numero_paginas}.png") 
+
+
+lista_cap = []
 for i in range(0, 1500):
-    listaCap.append(str(i))
+    lista_cap.append(str(i))
 mangas = os.listdir()
 
-for arquivoNome in mangas:
-    if arquivoNome.endswith(".zip"):
-        if len(arquivoNome) > 9:
-            mangaLivre(arquivoNome)
+for arquivo_nome in mangas:
+    if arquivo_nome.endswith(".zip"):
+        if len(arquivo_nome) > 9:
+            manga_livre(arquivo_nome)
         else:
-            siteGringo(arquivoNome)
+            site_gringo(arquivo_nome)
     else:
         pass
